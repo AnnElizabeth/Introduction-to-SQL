@@ -1,0 +1,103 @@
+SQl queriers using Medicare database
+
+1-Display the first five details in the Inpatient charges 2011 table from the Medicare database about the diagnosis defnition, provider id and provider name.
+Query: SELECT drg_definition,provider_id, provider_name  FROM `bigquery-public-data.medicare.inpatient_charges_2011` LIMIT 5
+Output:
+Row	   drg_definition	                                           provider_id	      provider_name	
+1	     418 - LAPAROSCOPIC CHOLECYSTECTOMY W/O C.D.E. W CC        20001              PROVIDENCE ALASKA MEDICAL CENTER
+2	     481 - HIP & FEMUR PROCEDURES EXCEPT MAJOR JOINT W CC      20001              PROVIDENCE ALASKA MEDICAL CENTER
+3	     473 - CERVICAL SPINAL FUSION W/O CC/MC                    20001              PROVIDENCE ALASKA MEDICAL CENTER
+4	     871 - SEPTICEMIA OR SEVERE SEPSIS W/O MV 96+ HOURS W MCC  20001              PROVIDENCE ALASKA MEDICAL CENTER
+5	     065 - INTRACRANIAL HEMORRHAGE OR CEREBRAL INFARCTION W CC 20001              PROVIDENCE ALASKA MEDICAL CENTER
+
+
+2-Display the first five diagnosis definition of the provider with id 20001.
+Query:Select drg_definition from `bigquery-public-data.medicare.inpatient_charges_2011`
+where provider_id=20001 LIMIT 5
+Output:
+Row	  drg_definition	
+1	    418 - LAPAROSCOPIC CHOLECYSTECTOMY W/O C.D.E. W CC
+2	    481 - HIP & FEMUR PROCEDURES EXCEPT MAJOR JOINT W CC
+3	    473 - CERVICAL SPINAL FUSION W/O CC/MCC
+4	    871 - SEPTICEMIA OR SEVERE SEPSIS W/O MV 96+ HOURS W MCC
+5	    065 - INTRACRANIAL HEMORRHAGE OR CEREBRAL INFARCTION W CC
+
+
+3-Display the diagnosis definition,provider name, average total payments and average covered charges where average covered charges is less than 3000
+Query:Select drg_definition,provider_name,average_total_payments,average_covered_charges from `bigquery-public-data.medicare.inpatient_charges_2011` 
+where average_covered_charges<30000 LIMIT 5
+Output:
+Row	drg_definition	                                               provider_name	                     average_total_payments	average_covered_charges	
+1	  195 - SIMPLE PNEUMONIA & PLEURISY W/O CC/MCC                   PROVIDENCE ALASKA MEDICAL CENTER    6158.529412            27385.0
+2	  392 - ESOPHAGITIS, GASTROENT & MISC DIGEST DISORDERS W/O MCC   PROVIDENCE ALASKA MEDICAL CENTER    6189.169811            25227.77358
+3	  389 - G.I. OBSTRUCTION W CC                                    PROVIDENCE ALASKA MEDICAL CENTER    8797.928571            29477.92857
+4	  603 - CELLULITIS W/O MCC                                       PROVIDENCE ALASKA MEDICAL CENTER    7345.542857            28709.31429
+5	  918 - POISONING & TOXIC EFFECTS OF DRUGS W/O MCC               PROVIDENCE ALASKA MEDICAL CENTER    6684.766667            27203.3
+
+
+4- Display the first five diagnosis definition and average total payments and arrange it in asc order of average total payments
+Query:Select drg_definition,average_total_payments FROM `bigquery-public-data.medicare.inpatient_charges_2011`
+ORDER BY average_total_payments ASC LIMIT 5
+Output:
+Row	 drg_definition	                                           average_total_payments	
+1	   313 - CHEST PAIN                                          2673.0
+2	   313 - CHEST PAIN                                          2682.642857
+3	   313 - CHEST PAIN                                          2707.875
+4	   313 - CHEST PAIN                                          2708.0
+5	   310 - CARDIAC ARRHYTHMIA & CONDUCTION DISORDERS W/O CC/MCC 2718.277778
+
+
+5- Display the highest average covered charges of Providence Alaska Medical Center
+Query:Select Max (average_covered_charges) from `bigquery-public-data.medicare.inpatient_charges_2011`
+where provider_name="PROVIDENCE ALASKA MEDICAL CENTER"
+Output:
+Row  	f0_	
+1	    190709.9091
+
+
+6- Check the number of total payments that is equal to 2000
+Query:Select COUNT(provider_name) from `bigquery-public-data.medicare.inpatient_charges_2011` where average_total_payments=2000
+Output:
+Row	 f0_	
+1	   0
+
+
+7- Display the diagnosis definition and total discharges where total discharges are from 15 to 20.
+Query: Select drg_definition,total_discharges from `bigquery-public-data.medicare.inpatient_charges_2011`
+where total_discharges BETWEEN 15 AND 20 LIMIT 5
+Output:
+Row	   drg_definition                                    	         total_discharges	
+1	     418 - LAPAROSCOPIC CHOLECYSTECTOMY W/O C.D.E. W CC          15
+2	     195 - SIMPLE PNEUMONIA & PLEURISY W/O CC/MCC                17
+3	     552 - MEDICAL BACK PROBLEMS W/O MCC                         20
+4	     308 - CARDIAC ARRHYTHMIA & CONDUCTION DISORDERS W MCC       19
+5	     069 - TRANSIENT ISCHEMIA                                    19
+
+
+8- Display the number of enteries in this table
+Query: SELECT count(provider_id) FROM `bigquery-public-data.medicare.inpatient_charges_2011`
+Output:
+Row 	f0_	
+1	    163065
+
+
+9- Display the number of enteries in this table where the total number of hospital discharges are more than 20.
+Querry:SELECT count(provider_id) FROM `bigquery-public-data.medicare.inpatient_charges_2011` WHERE total_discharges>20
+Output:
+Row   f0_
+1	    163065
+
+
+10- Display the number of entries where the total number of hospital discharges are excatly 20 and average charges covered is more than 20000
+Querry: SELECT count(provider_id) FROM `bigquery-public-data.medicare.inpatient_charges_2011`
+where total_discharges=20 AND average_covered_charges>20000
+Output:
+Row	 f0_	
+1	   2812
+
+
+
+
+
+
+
